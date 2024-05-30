@@ -1,45 +1,45 @@
-import React, { useContext, useState } from "react"
-import { Alert, Button, Checkbox, Form, Input } from "antd"
-import { useNavigate } from "react-router-dom"
-import { IsLogin } from "../../config/context/IsLoggedIn"
-import { loginProps } from "../../utils/Interface/Authentication"
-import { signIn } from "../../config/api/Auth"
-import Auth from "../../components/auth/Auth"
+import React, { useContext, useState } from "react";
+import { Alert, Button, Checkbox, Form, Input } from "antd";
+import { useNavigate } from "react-router-dom";
+import { IsLogin } from "../../config/context/IsLoggedIn";
+import { loginProps } from "../../utils/Interface/Authentication";
+import { signIn } from "../../config/api/Auth";
+import Auth from "../../components/auth/Auth";
 
 const Login: React.FC = () => {
-  const [username, setUsername] = useState<string>("")
-  const [password, setPassword] = useState<string>("")
-  const [remember, setRemember] = useState<boolean>(false)
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [remember, setRemember] = useState<boolean>(false);
 
-  const [showAlert, setShowAlert] = useState(false)
-  const [showAlertMsg, setShowAlertMsg] = useState<string>("")
+  const [showAlert, setShowAlert] = useState(false);
+  const [showAlertMsg, setShowAlertMsg] = useState<string>("");
 
-  const { setIsLoggedIn } = useContext(IsLogin)
+  const { setIsLoggedIn } = useContext(IsLogin);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const loginHandler = async () => {
     const loginData: loginProps = {
       username: username,
       password: password,
-    }
+    };
     await signIn(loginData)
       .then((response) => {
-        setIsLoggedIn(true)
-        sessionStorage.setItem("isLoggedIn", "true")
-        sessionStorage.setItem("employee_id", response.data.employee_id)
-        sessionStorage.setItem("email", response.data.email)
-        navigate("/dashboard")
+        setIsLoggedIn(true);
+        sessionStorage.setItem("isLoggedIn", "true");
+        sessionStorage.setItem("employee_id", response.data.employee_id);
+        sessionStorage.setItem("email", response.data.email);
+        navigate("/dashboard");
       })
       .catch((err: any) => {
-        setShowAlertMsg(err.response.data.msg)
-        setShowAlert(true)
+        setShowAlertMsg(err.response.data.msg);
+        setShowAlert(true);
         const timeout = setTimeout(() => {
-          setShowAlert(false)
-        }, 5000)
-        return () => clearTimeout(timeout)
-      })
-  }
+          setShowAlert(false);
+        }, 5000);
+        return () => clearTimeout(timeout);
+      });
+  };
 
   return (
     <Auth>
@@ -88,7 +88,7 @@ const Login: React.FC = () => {
               className="text-base"
               checked={remember}
               onClick={() => {
-                return setRemember(remember == false ? true : false)
+                return setRemember(remember == false ? true : false);
               }}
             >
               Remember me
@@ -115,7 +115,7 @@ const Login: React.FC = () => {
         </Form.Item>
       </Form>
     </Auth>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;
